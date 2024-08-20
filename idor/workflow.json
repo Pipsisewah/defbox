@@ -10,10 +10,10 @@
             "type": "createContainer",
             "containerName": "target",
             "dockerFolderName": "targetMachine",
-            "sustain": true,
             "networkName": "attacknetwork",
             "ExposedPorts": {"3005/tcp": {}},
-            "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]}
+            "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]},
+            "sustain": true
           }
         ],
         "on": {

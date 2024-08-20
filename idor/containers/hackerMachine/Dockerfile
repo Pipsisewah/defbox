@@ -1,18 +1,22 @@
 # Dockerfile
 
+# Use a Node.js base image
 FROM node:18
 
-# Create app directory
+# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json if available
+# Install Mocha globally (not recommended, but an option)
+RUN npm install -g mocha
+
+# Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install app dependencies
+# Install project dependencies
 RUN npm install
 
-# Bundle app source
+# Copy the rest of your application code to the container
 COPY . .
 
-# Command to run the exploit script
-CMD ["node", "exploit.js"]
+# Run mocha directly (since it's globally installed)
+CMD ["mocha", "test/idor.test.js"]

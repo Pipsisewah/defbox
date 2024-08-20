@@ -1,0 +1,38 @@
+{
+  "stateMachine": {
+    "id": "dockerScript",
+    "initial": "setupNetwork",
+    "context": {},
+    "states": {
+      "setupNetwork": {
+        "entry": [
+          {
+            "type": "createNetwork",
+            "networkName": "attacknetwork",
+            "subnetMask": "172.23.0.0/16",
+            "persist": true
+          }
+        ],
+        "on": {
+          "NEXT": "idor"
+        }
+      },
+      "idor": {
+        "entry": [
+          {
+            "type": "runWorkflow",
+            "workflowName": "idor",
+            "source": "externalProjects/defbox"
+          }
+        ],
+        "on": {
+          "NEXT": "complete"
+        }
+      },
+      "complete": {
+        "type": "final"
+      }
+    }
+  }
+
+}
