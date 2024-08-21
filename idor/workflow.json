@@ -1,19 +1,37 @@
 {
   "stateMachine": {
     "id": "dockerScript",
-    "initial": "targetMachine",
+    "initial": "mongodb",
     "context": {},
     "states": {
+      "mongodb": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxlocalmongodb",
+            "dockerFolderName": "mongodb",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"27017/tcp": {}},
+            "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
+            "sustain": true,
+            "awaitStart": true
+          }
+        ],
+        "on": {
+          "NEXT": "targetMachine"
+        }
+      },
       "targetMachine": {
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "target",
+            "containerName": "defboxlocaltarget",
             "dockerFolderName": "targetMachine",
             "networkName": "attacknetwork",
             "ExposedPorts": {"3005/tcp": {}},
             "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]},
-            "sustain": true
+            "sustain": true,
+            "awaitStart": true
           }
         ],
         "on": {
@@ -24,7 +42,7 @@
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "hacker",
+            "containerName": "defboxlocalhacker",
             "dockerFolderName": "hackerMachine",
             "sustain": true,
             "networkName": "attacknetwork",

@@ -1,22 +1,21 @@
 // app.js
 
 const express = require('express');
+const database = require('./db');
 const app = express();
 const path = require('path');
-const port = 3000;
+const port = 3005;
 
 app.use(express.json());
 
-// Sample in-memory database
-const users = [
-    { id: 1, name: 'Alice', role: 'admin', secret: 'Admin Secret' },
-    { id: 2, name: 'Bob', role: 'user', secret: 'User Secret' },
-];
+
+
 
 // Vulnerable endpoint
-app.get('/user/:id/', (req, res) => {
+app.get('/user/:id/', async (req, res) => {
+    await database.connection.collection('users').insertOne({"name": "Amber", "role": "Admin"});
     const userId = parseInt(req.params.id, 10);
-    const user = users.find(u => u.id === userId);
+    const user = await database.models.users.findOne({ employeeId: userId });
 
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -29,19 +28,20 @@ app.get('/user/:id/', (req, res) => {
 /**
  * IDOR updates the profile of whatever userId is provided
  */
-app.post('/updateProfile', (req, res) => {
+app.post('/updateProfile', async (req, res) => {
     const { userId, newProfileData } = req.body;
-    const user = users.find(u => u.id === userId);
+    const user = await database.models.users.findOne({ employeeId: userId });
     user.profile = newProfileData;
+    await user.save();
     res.json({ message: 'Profile updated' });
 });
 
 /**
  * IDOR provides access to get user info based on a header
  */
-app.get('/getUserData', (req, res) => {
+app.get('/getUserData', async (req, res) => {
     const userId = parseInt(req.headers['x-user-id'], 10);
-    const user = users.find(u => u.id === userId);
+    const user = await database.models.users.findOne({ employeeId: userId });
     res.json({user});
 });
 
@@ -56,6 +56,9 @@ app.get('/files/:filename', (req, res) => {
 });
 
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+app.listen(port, async () => {
+    console.log(`Server running on port ${port}`);
+    await database.connect();
+    await database.populate();
 });
+

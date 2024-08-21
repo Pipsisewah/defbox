@@ -4,7 +4,7 @@ import { strict as assert } from 'assert';
 import supertest from 'supertest';
 
 // Base URL for the running service (assuming it's accessible at localhost:3000)
-const baseUrl = 'http://target:3000';
+const baseUrl = 'http://defboxlocaltarget:3005';
 
 describe('IDOR Vulnerability Tests', () => {
     it('should allow access to user 1 data by any user', async () => {
