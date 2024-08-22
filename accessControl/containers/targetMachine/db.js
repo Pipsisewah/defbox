@@ -11,12 +11,6 @@ const users = [
     { id: 3, name: 'Kari', role: 'user', secret: 'Manager Secret', employeeId: 3 },
 ];
 
-const authTokens = [
-    { employeeId: 1, token: 'authToken1' },
-    { employeeId: 2, token: 'authToken2' },
-    { employeeId: 3, token: 'authToken3' },
-];
-
 // Define a schema and model (example)
 const userSchema = new mongoose.Schema({
     name: String,
@@ -26,15 +20,8 @@ const userSchema = new mongoose.Schema({
     profile: Object
 });
 
-const authTokenSchema = new mongoose.Schema({
-    employeeId: Number,
-    token: String,
-})
-
 const User = mongoose.model('User', userSchema);
-const AuthToken = mongoose.model('AuthToken', authTokenSchema);
 database.models.users = User;
-database.models.authTokens = AuthToken;
 
 
 database.populate = async () => {
@@ -44,7 +31,6 @@ database.populate = async () => {
         if (userCount === 0) {
             // Insert users if the collection is empty
             await User.insertMany(users);
-            await AuthToken.insertMany(authTokens);
             console.log('Database populated with initial data.');
         } else {
             console.log('Database already populated. Skipping population.');

@@ -1,4 +1,4 @@
-// test/idor.test.js
+// test/vulnerable_idor.test.js
 
 import { strict as assert } from 'assert';
 import supertest from 'supertest';

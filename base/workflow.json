@@ -14,6 +14,23 @@
           }
         ],
         "on": {
+          "NEXT": "mongodb"
+        }
+      },
+      "mongodb": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxlocalmongodb",
+            "dockerFolderName": "mongodb",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"27017/tcp": {}},
+            "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
+            "sustain": true,
+            "awaitStart": true
+          }
+        ],
+        "on": {
           "NEXT": "idor"
         }
       },

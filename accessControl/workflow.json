@@ -1,9 +1,26 @@
 {
   "stateMachine": {
     "id": "dockerScript",
-    "initial": "targetMachine",
+    "initial": "mongodb",
     "context": {},
     "states": {
+      "mongodb": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxlocalmongodb",
+            "dockerFolderName": "mongodb",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"27017/tcp": {}},
+            "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
+            "sustain": true,
+            "awaitStart": true
+          }
+        ],
+        "on": {
+          "NEXT": "targetMachine"
+        }
+      },
       "targetMachine": {
         "entry": [
           {
