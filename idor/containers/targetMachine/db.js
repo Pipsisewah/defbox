@@ -6,9 +6,9 @@ const mongoUrl = 'mongodb://defboxlocalmongodb:27017';
 
 // Sample in-memory database
 const users = [
-    { id: 1, name: 'Alice', role: 'admin', secret: 'Admin Secret', employeeId: 1 },
-    { id: 2, name: 'Bob', role: 'user', secret: 'User Secret', employeeId: 2 },
-    { id: 3, name: 'Kari', role: 'user', secret: 'Manager Secret', employeeId: 3 },
+    { id: 1, name: 'Alice', role: 'admin', secret: 'Admin Secret', employeeId: 1, companyId: 1 },
+    { id: 2, name: 'Bob', role: 'user', secret: 'User Secret', employeeId: 2, companyId: 2 },
+    { id: 3, name: 'Kari', role: 'user', secret: 'Manager Secret', employeeId: 3, companyId: 1 },
 ];
 
 const authTokens = [
@@ -17,24 +17,40 @@ const authTokens = [
     { employeeId: 3, token: 'authToken3' },
 ];
 
+const files = [
+    { fileName: 'firstFile', companyId: 1},
+    { fileName: 'secondFile', companyId: 2},
+    { fileName: 'thirdFile', companyId: 1},
+    { fileName: 'secret.txt', companyId: 1},
+
+];
+
 // Define a schema and model (example)
 const userSchema = new mongoose.Schema({
     name: String,
     role: String,
     secret: String,
     employeeId: Number,
-    profile: Object
+    profile: Object,
+    companyId: Number
 });
 
 const authTokenSchema = new mongoose.Schema({
     employeeId: Number,
     token: String,
-})
+});
+
+const fileSchema = new mongoose.Schema({
+    fileName: String,
+    companyId: Number,
+});
 
 const User = mongoose.model('User', userSchema);
 const AuthToken = mongoose.model('AuthToken', authTokenSchema);
+const File = mongoose.model('File', fileSchema);
 database.models.users = User;
 database.models.authTokens = AuthToken;
+database.models.files = File;
 
 
 database.populate = async () => {
@@ -45,6 +61,7 @@ database.populate = async () => {
             // Insert users if the collection is empty
             await User.insertMany(users);
             await AuthToken.insertMany(authTokens);
+            await File.insertMany(files);
             console.log('Database populated with initial data.');
         } else {
             console.log('Database already populated. Skipping population.');
