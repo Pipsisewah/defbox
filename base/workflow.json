@@ -43,6 +43,18 @@
           }
         ],
         "on": {
+          "NEXT": "accessControl"
+        }
+      },
+      "accessControl": {
+        "entry": [
+          {
+            "type": "runWorkflow",
+            "workflowName": "accessControl",
+            "source": "externalProjects/defbox"
+          }
+        ],
+        "on": {
           "NEXT": "complete"
         }
       },

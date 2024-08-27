@@ -1,37 +1,36 @@
 {
   "stateMachine": {
     "id": "dockerScript",
-    "initial": "mongodb",
+    "initial": "targetMachine",
     "context": {},
     "states": {
-      "mongodb": {
+      "targetMachine": {
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "defboxlocalmongodb",
-            "dockerFolderName": "mongodb",
+            "containerName": "defboxactarget",
+            "dockerFolderName": "targetMachine",
             "networkName": "attacknetwork",
-            "ExposedPorts": {"27017/tcp": {}},
-            "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
+            "ExposedPorts": {"3007/tcp": {}},
+            "PortBindings": { "3007/tcp": [{ "HostPort": "3007" }]},
             "sustain": true,
             "awaitStart": true
           }
         ],
         "on": {
-          "NEXT": "targetMachine"
+          "NEXT": "loadBalancer"
         }
       },
-      "targetMachine": {
+      "loadBalancer": {
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "defboxlocaltarget",
-            "dockerFolderName": "targetMachine",
+            "containerName": "defboxacloadbalancer",
+            "dockerFolderName": "loadBalancer",
             "networkName": "attacknetwork",
-            "ExposedPorts": {"3005/tcp": {}},
-            "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]},
             "sustain": true,
-            "awaitStart": true
+            "ExposedPorts": {"3080/tcp": {}},
+            "PortBindings": { "3080/tcp": [{ "HostPort": "3080" }]}
           }
         ],
         "on": {
@@ -42,12 +41,12 @@
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "defboxlocalhacker",
+            "containerName": "defboxachacker",
             "dockerFolderName": "hackerMachine",
             "sustain": true,
             "networkName": "attacknetwork",
-            "ExposedPorts": {"3042/tcp": {}},
-            "PortBindings": { "3042/tcp": [{ "HostPort": "3042" }]}
+            "ExposedPorts": {"3008/tcp": {}},
+            "PortBindings": { "3008/tcp": [{ "HostPort": "3008" }]}
           }
         ],
         "on": {

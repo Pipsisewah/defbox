@@ -19,4 +19,4 @@ RUN npm install
 COPY . .
 
 # Run mocha directly (since it's globally installed)
-CMD ["mocha", "test/vulnerable_idor.test.js"]
+CMD ["mocha", "test/ac.test.js"]
