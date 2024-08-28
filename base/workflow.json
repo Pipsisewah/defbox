@@ -26,7 +26,6 @@
             "networkName": "attacknetwork",
             "ExposedPorts": {"27017/tcp": {}},
             "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
-            "sustain": true,
             "awaitStart": true
           }
         ],

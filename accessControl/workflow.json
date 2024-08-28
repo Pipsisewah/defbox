@@ -13,7 +13,6 @@
             "networkName": "attacknetwork",
             "ExposedPorts": {"3007/tcp": {}},
             "PortBindings": { "3007/tcp": [{ "HostPort": "3007" }]},
-            "sustain": true,
             "awaitStart": true
           }
         ],
@@ -28,7 +27,6 @@
             "containerName": "defboxacloadbalancer",
             "dockerFolderName": "loadBalancer",
             "networkName": "attacknetwork",
-            "sustain": true,
             "ExposedPorts": {"3080/tcp": {}},
             "PortBindings": { "3080/tcp": [{ "HostPort": "3080" }]}
           }
@@ -44,6 +42,7 @@
             "containerName": "defboxachacker",
             "dockerFolderName": "hackerMachine",
             "sustain": true,
+            "awaitFinish": true,
             "networkName": "attacknetwork",
             "ExposedPorts": {"3008/tcp": {}},
             "PortBindings": { "3008/tcp": [{ "HostPort": "3008" }]}

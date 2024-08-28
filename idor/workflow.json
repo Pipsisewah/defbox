@@ -13,7 +13,6 @@
             "networkName": "attacknetwork",
             "ExposedPorts": {"3005/tcp": {}},
             "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]},
-            "sustain": true,
             "awaitStart": true
           }
         ],
@@ -27,6 +26,7 @@
             "type": "createContainer",
             "containerName": "defboxlocalhacker",
             "dockerFolderName": "hackerMachine",
+            "awaitFinish": true,
             "sustain": true,
             "networkName": "attacknetwork",
             "ExposedPorts": {"3042/tcp": {}},
