@@ -8,12 +8,12 @@
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "target",
+            "containerName": "defboxlocaltarget",
             "dockerFolderName": "targetMachine",
-            "sustain": true,
             "networkName": "attacknetwork",
             "ExposedPorts": {"3005/tcp": {}},
-            "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]}
+            "PortBindings": { "3005/tcp": [{ "HostPort": "3005" }]},
+            "awaitStart": true
           }
         ],
         "on": {
@@ -24,8 +24,9 @@
         "entry": [
           {
             "type": "createContainer",
-            "containerName": "hacker",
+            "containerName": "defboxlocalhacker",
             "dockerFolderName": "hackerMachine",
+            "awaitFinish": true,
             "sustain": true,
             "networkName": "attacknetwork",
             "ExposedPorts": {"3042/tcp": {}},

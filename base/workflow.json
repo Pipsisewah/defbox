@@ -1,0 +1,66 @@
+{
+  "stateMachine": {
+    "id": "dockerScript",
+    "initial": "setupNetwork",
+    "context": {},
+    "states": {
+      "setupNetwork": {
+        "entry": [
+          {
+            "type": "createNetwork",
+            "networkName": "attacknetwork",
+            "subnetMask": "172.23.0.0/16",
+            "persist": true
+          }
+        ],
+        "on": {
+          "NEXT": "mongodb"
+        }
+      },
+      "mongodb": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxlocalmongodb",
+            "dockerFolderName": "mongodb",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"27017/tcp": {}},
+            "PortBindings": { "27017/tcp": [{ "HostPort": "27017" }]},
+            "awaitStart": true
+          }
+        ],
+        "on": {
+          "NEXT": "idor"
+        }
+      },
+      "idor": {
+        "entry": [
+          {
+            "type": "runWorkflow",
+            "workflowName": "idor",
+            "source": "externalProjects/defbox"
+          }
+        ],
+        "on": {
+          "NEXT": "accessControl"
+        }
+      },
+      "accessControl": {
+        "entry": [
+          {
+            "type": "runWorkflow",
+            "workflowName": "accessControl",
+            "source": "externalProjects/defbox"
+          }
+        ],
+        "on": {
+          "NEXT": "complete"
+        }
+      },
+      "complete": {
+        "type": "final"
+      }
+    }
+  }
+
+}

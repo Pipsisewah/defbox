@@ -1,0 +1,61 @@
+{
+  "stateMachine": {
+    "id": "dockerScript",
+    "initial": "targetMachine",
+    "context": {},
+    "states": {
+      "targetMachine": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxactarget",
+            "dockerFolderName": "targetMachine",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"3007/tcp": {}},
+            "PortBindings": { "3007/tcp": [{ "HostPort": "3007" }]},
+            "awaitStart": true
+          }
+        ],
+        "on": {
+          "NEXT": "loadBalancer"
+        }
+      },
+      "loadBalancer": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxacloadbalancer",
+            "dockerFolderName": "loadBalancer",
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"3080/tcp": {}},
+            "PortBindings": { "3080/tcp": [{ "HostPort": "3080" }]}
+          }
+        ],
+        "on": {
+          "NEXT": "hackerMachine"
+        }
+      },
+      "hackerMachine": {
+        "entry": [
+          {
+            "type": "createContainer",
+            "containerName": "defboxachacker",
+            "dockerFolderName": "hackerMachine",
+            "sustain": true,
+            "awaitFinish": true,
+            "networkName": "attacknetwork",
+            "ExposedPorts": {"3008/tcp": {}},
+            "PortBindings": { "3008/tcp": [{ "HostPort": "3008" }]}
+          }
+        ],
+        "on": {
+          "NEXT": "complete"
+        }
+      },
+      "complete": {
+        "type": "final"
+      }
+    }
+  }
+
+}
